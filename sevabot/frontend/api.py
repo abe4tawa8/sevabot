@@ -189,10 +189,10 @@ class JenkinsNotifier(SendMessage):
         msg = None
 
         try:
-            payload = json.loads(request.form.keys()[0])
-        except IndexError:
+            payload = request.get_json()
+        except:
             logger.error("Jenkins did not post a valid HTTP POST payload. Check the logs for further info.")
-            logger.error(request.form.items())
+            logger.error(request.data)
             return "Jenkins bad notification: Could not read HTTP POST data"
 
         # Filter out completed status, lots of unneeded noise
